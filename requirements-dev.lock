@@ -9,11 +9,65 @@
 #   generate-hashes: false
 
 -e file:.
+asttokens==2.4.1
+    # via stack-data
+backcall==0.2.0
+    # via ipython
+decorator==5.1.1
+    # via ipython
+exceptiongroup==1.2.1
+    # via pytest
+executing==2.0.1
+    # via stack-data
+iniconfig==2.0.0
+    # via pytest
+ipython==8.12.3
+jedi==0.19.1
+    # via ipython
+matplotlib-inline==0.1.7
+    # via ipython
 maturin==1.6.0
     # via polars-path
+mypy==1.10.1
+mypy-extensions==1.0.0
+    # via mypy
+packaging==24.1
+    # via pytest
+parso==0.8.4
+    # via jedi
 patchelf==0.17.2.1
     # via maturin
+pexpect==4.9.0
+    # via ipython
+pickleshare==0.7.5
+    # via ipython
+pip==24.1.2
+pluggy==1.5.0
+    # via pytest
 polars==1.0.0
     # via polars-path
+prompt-toolkit==3.0.47
+    # via ipython
+ptyprocess==0.7.0
+    # via pexpect
+pure-eval==0.2.2
+    # via stack-data
+pygments==2.18.0
+    # via ipython
+pytest==8.2.2
+six==1.16.0
+    # via asttokens
+stack-data==0.6.3
+    # via ipython
 tomli==2.0.1
     # via maturin
+    # via mypy
+    # via pytest
+traitlets==5.14.3
+    # via ipython
+    # via matplotlib-inline
+typing-extensions==4.12.2
+    # via ipython
+    # via mypy
+wcwidth==0.2.13
+    # via prompt-toolkit

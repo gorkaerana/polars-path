@@ -1,3 +1,9 @@
+tool = { rye = { dev-dependencies = [
+    "pip>=24.1.2",
+    "mypy>=1.10.1",
+    "ipython>=8.12.3",
+    "pytest>=8.2.2",
+] } }
 [project]
 name = "polars-path"
 version = "0.1.0"

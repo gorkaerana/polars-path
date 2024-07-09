@@ -72,7 +72,7 @@ fn is_file(inputs: &[Series]) -> PolarsResult<Series>{
     }
 }
 
-#[polars_expr(output_type=Boolean)]
+#[polars_expr(output_type=String)]
 fn parent(inputs: &[Series]) -> PolarsResult<Series>{
     let s = inputs.get(0).expect("no series received");
     match s.dtype() {

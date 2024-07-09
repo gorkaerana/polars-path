@@ -14,3 +14,4 @@ wheels/
 
 # cargo stuff
 target/
+*.so

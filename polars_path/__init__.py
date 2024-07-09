@@ -51,6 +51,7 @@ class PathNamespaceMethod:
     def method_lines(self):
         return [
             f"def {self.method_name}(self) -> pl.Expr:",
+            f"    \"\"\"{self.docstring}\"\"\"",
             "    return register_plugin_function(",
             "        plugin_path=Path(__file__).parent,",
             f'        function_name="{self.method_name}",',
@@ -61,10 +62,6 @@ class PathNamespaceMethod:
 
     def make(self):
         exec("\n".join(self.method_lines), globals())
-        exec(
-            f'{self.method_name}.__docstring__ = "{self.docstring}"',
-            globals(),
-        )
         setattr(PathNamespace, self.method_name, globals()[self.method_name])
 
 

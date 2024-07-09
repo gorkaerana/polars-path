@@ -1,7 +1,7 @@
-from pathlib import Path
+from pathlib import Path  # noqa
 
 import polars as pl
-from polars.plugins import register_plugin_function
+from polars.plugins import register_plugin_function  # noqa
 
 
 @pl.api.register_expr_namespace("path")
@@ -9,47 +9,71 @@ class PathNamespace:
     def __init__(self, expr: pl.Expr):
         self._expr = expr
 
-    def exists(self) -> pl.Expr:
-        """Equivalent to https://docs.python.org/3/library/os.path.html#os.path.exists and https://docs.python.org/3/library/pathlib.html#pathlib.Path.exists. Implemented via https://doc.rust-lang.org/std/path/struct.Path.html#method.exists"""
-        return register_plugin_function(
-            plugin_path=Path(__file__).parent,
-            function_name="exists",
-            args=self._expr,
-            is_elementwise=True,
+
+OS_PATH_LINK_PREFIX = "https://docs.python.org/3/library/os.path.html#os.path."
+PATHLIB_LINK_PREFIX = "https://docs.python.org/3/library/pathlib.html#pathlib.PurePath."
+STD_PATH_LINK_PREFIX = "https://doc.rust-lang.org/std/path/struct.Path.html#method."
+
+
+class PathNamespaceMethod:
+    def __init__(
+        self,
+        os_path_link_suffix: str,
+        pathlib_link_suffix: str,
+        std_path_link_suffix: str,
+        method_name: str,
+    ):
+        self.os_path_link_suffix = os_path_link_suffix
+        self.pathlib_link_suffix = pathlib_link_suffix
+        self.std_path_link_suffix = std_path_link_suffix
+        self.method_name = method_name
+
+    def __repr__(self):
+        attributes = [
+            "os_path_link_suffix",
+            "pathlib_link_suffix",
+            "std_path_link_suffix",
+            "method_name",
+        ]
+        pretty_attrs = ", ".join(f"{a}={repr(getattr(self, a))}" for a in attributes)
+        return f"{self.__class__.__name__}({pretty_attrs})"
+
+    @property
+    def docstring(self):
+        return (
+            f"Equivalent to {OS_PATH_LINK_PREFIX}{self.os_path_link_suffix}, and "
+            f"{PATHLIB_LINK_PREFIX}{self.pathlib_link_suffix}. Implemented with "
+            f"{STD_PATH_LINK_PREFIX}{self.std_path_link_suffix}"
         )
 
-    def is_absolute(self) -> pl.Expr:
-        """Equivalent to https://docs.python.org/3/library/os.path.html#os.path.isabs and https://docs.python.org/3/library/pathlib.html#pathlib.PurePath.is_absolute. Implemented with https://doc.rust-lang.org/std/path/struct.Path.html#method.is_absolute"""
-        return register_plugin_function(
-            plugin_path=Path(__file__).parent,
-            function_name="is_absolute",
-            args=self._expr,
-            is_elementwise=True,
-        )
+    @property
+    def method_lines(self):
+        return [
+            f"def {self.method_name}(self) -> pl.Expr:",
+            "    return register_plugin_function(",
+            "        plugin_path=Path(__file__).parent,",
+            f'        function_name="{self.method_name}",',
+            "        args=self._expr,",
+            "        is_elementwise=True",
+            "    )",
+        ]
 
-    def is_file(self) -> pl.Expr:
-        """Equivalent to https://docs.python.org/3/library/os.path.html#os.path.isfile and https://docs.python.org/3/library/pathlib.html#pathlib.Path.is_file. Implemented with https://doc.rust-lang.org/std/path/struct.Path.html#method.is_file"""
-        return register_plugin_function(
-            plugin_path=Path(__file__).parent,
-            function_name="is_file",
-            args=self._expr,
-            is_elementwise=True,
+    def make(self):
+        exec("\n".join(self.method_lines), globals())
+        exec(
+            f'{self.method_name}.__docstring__ = "{self.docstring}"',
+            globals(),
         )
+        setattr(PathNamespace, self.method_name, globals()[self.method_name])
 
-    def is_dir(self) -> pl.Expr:
-        """Equivalent to https://docs.python.org/3/library/os.path.html#os.path.isdir and https://docs.python.org/3/library/pathlib.html#pathlib.Path.is_dir. Implemented with https://doc.rust-lang.org/std/path/struct.Path.html#method.is_dir"""
-        return register_plugin_function(
-            plugin_path=Path(__file__).parent,
-            function_name="is_dir",
-            args=self._expr,
-            is_elementwise=True,
-        )
 
-    def parent(self) -> pl.Expr:
-        """Equivalent to https://docs.python.org/3/library/os.path.html#os.path.dirname and https://docs.python.org/3/library/pathlib.html#pathlib.PurePath.parent. Implemented with https://doc.rust-lang.org/std/path/struct.Path.html#method.parent"""
-        return register_plugin_function(
-            plugin_path=Path(__file__).parent,
-            function_name="parent",
-            args=self._expr,
-            is_elementwise=True,
-        )
+PATH_NAMESPACE_METHODS: tuple[PathNamespaceMethod, ...] = (
+    PathNamespaceMethod("exists", "exists", "exists", "exists"),
+    PathNamespaceMethod("isabs", "is_absolute", "is_absolute", "is_absolute"),
+    PathNamespaceMethod("isfile", "is_file", "is_file", "is_file"),
+    PathNamespaceMethod("isdir", "is_dir", "is_dir", "is_dir"),
+    PathNamespaceMethod("dirname", "parent", "parent", "parent"),
+)
+
+for method in PATH_NAMESPACE_METHODS:
+    method.make()

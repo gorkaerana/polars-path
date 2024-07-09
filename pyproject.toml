@@ -1,0 +1,17 @@
+[project]
+name = "polars-path"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "Gorka Eraña", email = "eranagorka@gmail.com" }
+]
+dependencies = [
+    "maturin[patchelf]",
+    "polars",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"

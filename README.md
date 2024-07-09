@@ -1,2 +1,60 @@
 # polars-path
 Polars plugin with filesystem path utilities 
+
+## To-do
+- [ ] `Path.absolute`
+- [ ] `Path.anchor`
+- [ ] `Path.as_posix`
+- [ ] `Path.as_uri`
+- [ ] `Path.chmod`
+- [ ] `Path.cwd`
+- [ ] `Path.drive`
+- [X] `Path.exists`
+- [ ] `Path.expanduser`
+- [ ] `Path.glob`
+- [ ] `Path.group`
+- [ ] `Path.home`
+- [X] `Path.is_absolute`
+- [ ] `Path.is_block_device`
+- [ ] `Path.is_char_device`
+- [X] `Path.is_dir`
+- [ ] `Path.is_fifo`
+- [X] `Path.is_file`
+- [ ] `Path.is_mount`
+- [ ] `Path.is_reserved`
+- [ ] `Path.is_socket`
+- [ ] `Path.is_symlink`
+- [ ] `Path.iterdir`
+- [ ] `Path.joinpath`
+- [ ] `Path.lchmod`
+- [ ] `Path.link_to`
+- [ ] `Path.lstat`
+- [ ] `Path.match`
+- [ ] `Path.mkdir`
+- [ ] `Path.name`
+- [ ] `Path.open`
+- [ ] `Path.owner`
+- [X] `Path.parent`
+- [ ] `Path.parents`
+- [ ] `Path.parts`
+- [ ] `Path.read_bytes`
+- [ ] `Path.read_text`
+- [ ] `Path.relative_to`
+- [ ] `Path.rename`
+- [ ] `Path.replace`
+- [ ] `Path.resolve`
+- [ ] `Path.rglob`
+- [ ] `Path.rmdir`
+- [ ] `Path.root`
+- [ ] `Path.samefile`
+- [ ] `Path.stat`
+- [ ] `Path.stem`
+- [ ] `Path.suffix`
+- [ ] `Path.suffixes`
+- [ ] `Path.symlink_to`
+- [ ] `Path.touch`
+- [ ] `Path.unlink`
+- [ ] `Path.with_name`
+- [ ] `Path.with_suffix`
+- [ ] `Path.write_bytes`
+- [ ] `Path.write_text`

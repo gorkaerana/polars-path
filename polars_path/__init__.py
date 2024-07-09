@@ -10,12 +10,13 @@ class PathNamespace:
         self._expr = expr
 
 
-OS_PATH_LINK_PREFIX = "https://docs.python.org/3/library/os.path.html#os.path."
-PATHLIB_LINK_PREFIX = "https://docs.python.org/3/library/pathlib.html#pathlib.PurePath."
-STD_PATH_LINK_PREFIX = "https://doc.rust-lang.org/std/path/struct.Path.html#method."
-
-
 class PathNamespaceMethod:
+    os_path_link_prefix = "https://docs.python.org/3/library/os.path.html#os.path."
+    pathlib_link_prefix = (
+        "https://docs.python.org/3/library/pathlib.html#pathlib.PurePath."
+    )
+    std_path_link_prefix = "https://doc.rust-lang.org/std/path/struct.Path.html#method."
+
     def __init__(
         self,
         os_path_link_suffix: str,
@@ -41,9 +42,9 @@ class PathNamespaceMethod:
     @property
     def docstring(self):
         return (
-            f"Equivalent to {OS_PATH_LINK_PREFIX}{self.os_path_link_suffix}, and "
-            f"{PATHLIB_LINK_PREFIX}{self.pathlib_link_suffix}. Implemented with "
-            f"{STD_PATH_LINK_PREFIX}{self.std_path_link_suffix}"
+            f"Equivalent to {self.os_path_link_prefix}{self.os_path_link_suffix}, "
+            f"and {self.pathlib_link_prefix}{self.pathlib_link_suffix}. Implemented "
+            f"with {self.std_path_link_prefix}{self.std_path_link_suffix}"
         )
 
     @property

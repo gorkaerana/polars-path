@@ -2,6 +2,23 @@ from pathlib import Path
 import shutil
 
 import polars as pl
+from polars.datatypes import (
+    Binary,
+    Boolean,
+    Date,
+    Datetime,
+    Duration,
+    Float32,
+    Float64,
+    Int16,
+    Int32,
+    Int64,
+    Int8,
+    List,
+    Null,
+    Time,
+    Unknown,
+)
 from polars.testing import assert_series_equal
 import pytest
 
@@ -63,3 +80,44 @@ def test_parent(directory_hierarchy, filepaths):
     assert_series_equal(
         df["parent"], pl.Series("parent", [str(Path(p).parent) for p in filepaths])
     )
+
+
+def test_name(directory_hierarchy, filepaths):
+    df = pl.DataFrame({"filepath": filepaths}).with_columns(
+        name=pl.col("filepath").path.name()
+    )
+    assert_series_equal(
+        df["name"], pl.Series("name", [str(Path(p).name) for p in filepaths])
+    )
+
+
+@pytest.mark.parametrize(
+    "method_name", [m.method_name for m in plp.PATH_NAMESPACE_METHODS]
+)
+@pytest.mark.parametrize(
+    "datatype",
+    [
+        Binary,
+        Boolean,
+        Date,
+        Datetime,
+        Duration,
+        Float32,
+        Float64,
+        Int16,
+        Int32,
+        Int64,
+        Int8,
+        List,
+        Null,
+        Time,
+        Unknown,
+    ],
+)
+def test_compute_error_raised_with_non_string_data_type(method_name, datatype):
+    with pytest.raises(pl.exceptions.ComputeError):
+        pl.DataFrame({"filepath": [None, None]}).cast(datatype).with_columns(
+            getattr(pl.col("filepath").path, method_name)().alias(method_name)
+        )
+    # TODO
+    # assert f"'{method_name}' only works on string data, instead got" in str(exception_info.value)

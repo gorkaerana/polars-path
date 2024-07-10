@@ -19,8 +19,8 @@ class PathNamespaceMethod:
 
     def __init__(
         self,
-        os_path_link_suffix: str,
-        pathlib_link_suffix: str,
+        os_path_link_suffix: str | None,
+        pathlib_link_suffix: str | None,
         std_path_link_suffix: str,
         method_name: str,
     ):
@@ -41,9 +41,18 @@ class PathNamespaceMethod:
 
     @property
     def docstring(self):
+        equivalences = ", and ".join(
+            [
+                f"{prefix}{suffix}"
+                for prefix, suffix in [
+                    (self.os_path_link_prefix, self.os_path_link_suffix),
+                    (self.pathlib_link_prefix, self.pathlib_link_suffix),
+                ]
+                if suffix is not None
+            ]
+        )
         return (
-            f"Equivalent to {self.os_path_link_prefix}{self.os_path_link_suffix}, "
-            f"and {self.pathlib_link_prefix}{self.pathlib_link_suffix}. Implemented "
+            f"Equivalent to {equivalences}. Implemented "
             f"with {self.std_path_link_prefix}{self.std_path_link_suffix}"
         )
 
@@ -51,7 +60,7 @@ class PathNamespaceMethod:
     def method_lines(self):
         return [
             f"def {self.method_name}(self) -> pl.Expr:",
-            f"    \"\"\"{self.docstring}\"\"\"",
+            f'    """{self.docstring}"""',
             "    return register_plugin_function(",
             "        plugin_path=Path(__file__).parent,",
             f'        function_name="{self.method_name}",',
@@ -71,6 +80,7 @@ PATH_NAMESPACE_METHODS: tuple[PathNamespaceMethod, ...] = (
     PathNamespaceMethod("isfile", "is_file", "is_file", "is_file"),
     PathNamespaceMethod("isdir", "is_dir", "is_dir", "is_dir"),
     PathNamespaceMethod("dirname", "parent", "parent", "parent"),
+    PathNamespaceMethod("basename", "name", "file_name", "name"),
 )
 
 for method in PATH_NAMESPACE_METHODS:

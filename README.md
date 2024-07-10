@@ -31,7 +31,7 @@ Polars plugin with filesystem path utilities
 - [ ] `Path.lstat`
 - [ ] `Path.match`
 - [ ] `Path.mkdir`
-- [ ] `Path.name`
+- [X] `Path.name`
 - [ ] `Path.open`
 - [ ] `Path.owner`
 - [X] `Path.parent`
